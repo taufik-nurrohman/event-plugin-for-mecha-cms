@@ -27,20 +27,20 @@ Get::plug('events', function($order = 'DESC', $filter = "", $e = 'txt') {
 
 // Get list of event(s) detail(s)
 Get::plug('eventsExtract', function($order = 'DESC', $sorter = 'time', $filter = "", $e = 'txt') {
-    return Get::postsExtract($order, $sorter, $filter, $e, 'event:', POST . DS . 'event');
+    return Get::postsExtract($order, $sorter, $filter, $e, POST . DS . 'event', 'event:');
 });
 
 // Get minimum data of an event
 Get::plug('eventAnchor', function($path) {
-    return Get::postAnchor($path, POST . DS . 'event', '/' . Config::get('event.slug') . '/', 'event:');
+    return Get::postAnchor($path, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
 });
 
 // Get event header(s) only
 Get::plug('eventHeader', function($path) {
-    return Get::postHeader($path, POST . DS . 'event', '/' . Config::get('event.slug') . '/', 'event:');
+    return Get::postHeader($path, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
 });
 
 // Extract event file into list of event date
 Get::plug('event', function($reference, $excludes = array()) {
-    return Get::post($reference, $excludes, POST . DS . 'event', '/' . Config::get('event.slug') . '/', 'event:');
+    return Get::post($reference, $excludes, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
 });

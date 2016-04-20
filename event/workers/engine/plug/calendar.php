@@ -11,10 +11,10 @@ Weapon::add('plugins_after', function() use($config, $speak) {
             if($files = Get::events(null, 'time:' . $year . '-' . $month_str)) {
                 // link to event archive page
                 $lot[$year . '/' . $month] = array(
-                    'url' => $config->url . '/' . $config->event->slug . HTTP::query(array(
+                    'url' => $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
                         'filter' => 'time:' . $year . '-' . $month_str,
                         $config->event_query => false
-                    )),
+                    ))),
                     'description' => $config->event->title
                 );
                 $lot_o = array();
@@ -55,14 +55,14 @@ Weapon::add('plugins_after', function() use($config, $speak) {
         $m_n = $lot['next']['month'];
         if($m_p < 10) $m_p = '0' . $m_p;
         if($m_n < 10) $m_n = '0' . $m_n;
-        $lot['prev']['url'] = $config->url . '/' . $config->event->slug . HTTP::query(array(
+        $lot['prev']['url'] = $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
             'filter' => 'time:' . $y_p . '-' . $m_p,
             $config->event_query => false
-        ));
-        $lot['next']['url'] = $config->url . '/' . $config->event->slug . HTTP::query(array(
+        )));
+        $lot['next']['url'] = $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
             'filter' => 'time:' . $y_n . '-' . $m_n,
             $config->event_query => false
-        ));
+        )));
         return $lot;
     });
 });

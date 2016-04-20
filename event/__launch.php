@@ -8,3 +8,7 @@ Weapon::add('event_footer', function($event) use($config, $speak) {
     ), "");
     echo $status . Cell::a($config->manager->slug . '/event/repair/id:' . $event->id, $speak->edit) . ' / ' . Cell::a($config->manager->slug . '/event/kill/id:' . $event->id, $speak->delete);
 }, 20);
+
+if(strpos($config->url_path . '/', $config->manager->slug . '/event/') === 0) {
+    require __DIR__ . DS . 'workers' . DS . 'route.event.php';
+}

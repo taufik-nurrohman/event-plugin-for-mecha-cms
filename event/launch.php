@@ -14,18 +14,15 @@ Config::set(Mecha::A($config->states->{'plugin_' . md5(File::B(__DIR__))}) + arr
     '__events_path' => $events[1],
     'total_events' => count($events[0]),
     '__total_events' => count($events[1]),
-    'event_query' => class_exists('Calendar') ? Calendar::$config['query'] : 'calendar'
+    'event_query' => 0
 ));
 
 $config = Config::get();
 $speak = Config::speak();
 
-if(Plugin::exist('calendar')) {
+if(Plugin::exist('calendar') && class_exists('Calendar')) {
+    Config::set('event_query', Calendar::$config['query']);
     require __DIR__ . DS . 'workers' . DS . 'engine' . DS . 'plug' . DS . 'calendar.php';
 }
 
 require __DIR__ . DS . 'workers' . DS . 'engine' . DS . 'plug' . DS . 'get.php';
-
-if(strpos($config->url_path . '/', $config->manager->slug . '/event/') === 0) {
-    require __DIR__ . DS . 'workers' . DS . 'route.event.php';
-}

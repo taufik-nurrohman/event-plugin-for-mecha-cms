@@ -7,10 +7,10 @@ $excludes = array('content');
 // Update event tag URL ...
 Filter::add('tag:url', function($url) use($config) {
     if($tag = Get::eventTag('slug:' . File::B($url))) {
-        return $config->url . '/' . $config->event->slug . HTTP::query(array(
+        return $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
             'filter' => 'kind:' . $tag->id,
             $config->event_query => false
-        ));
+        )));
     }
     return $url;
 });
@@ -53,7 +53,7 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:num)'), fun
     ));
     $s = file_exists(SHIELD . DS . $config->shield . DS . 'index-event.php') ? 'index-event' : 'index-article';
     Shield::attach($s);
-}, 30);
+});
 
 
 /**
@@ -100,4 +100,4 @@ Route::accept($config->event->slug . '/(:any)', function($slug = "") use($config
     }, 11);
     $s = file_exists(SHIELD . DS . $config->shield . DS . 'event.php') ? 'event' : 'article';
     Shield::attach($s . '-' . $slug);
-}, 70);
+});
