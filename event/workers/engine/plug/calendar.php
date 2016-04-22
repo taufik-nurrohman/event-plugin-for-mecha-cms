@@ -1,7 +1,7 @@
 <?php
 
 // Adding event(s) data to the event calendar ...
-Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak, $q) {
+Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak) {
     $the_year = Calendar::year($id, $year);
     $the_month = Calendar::month($id, $month);
     // Load data if the calendar time is equal to current time
@@ -10,10 +10,7 @@ Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak, 
         if($files = Get::events(null, 'time:' . $year . '-' . $month_str)) {
             // link to event archive page
             $lot[$year . '/' . $month] = array(
-                'url' => $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
-                    'filter' => 'time:' . $year . '-' . $month_str,
-                    $q => false
-                ))),
+                'url' => $config->url . '/' . $config->event->slug . '/time:' . $year . '-' . $month_str,
                 'description' => $config->event->title
             );
             $lot_o = array();
@@ -54,20 +51,14 @@ Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak, 
     $m_n = $lot['next']['month'];
     if($m_p < 10) $m_p = '0' . $m_p;
     if($m_n < 10) $m_n = '0' . $m_n;
-    $lot['prev']['url'] = $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
-        'filter' => 'time:' . $y_p . '-' . $m_p,
-        $q => false
-    )));
-    $lot['next']['url'] = $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
-        'filter' => 'time:' . $y_n . '-' . $m_n,
-        $q => false
-    )));
+    $lot['prev']['url'] = $config->url . '/' . $config->event->slug . '/time:' . $y_p . '-' . $m_p;
+    $lot['next']['url'] = $config->url . '/' . $config->event->slug . '/time:' . $y_n . '-' . $m_n;
     return $lot;
 });
 
 // Hijack HTTP query of calendar based on `?filter=time:*` value ...
 Weapon::add('shield_lot_before', function() use($q) {
-    $filter = Request::get('filter', 'time:' . date('Y-m'));
+    $filter = Config::get('event_query', 'time:' . date('Y-m'));
     if(strpos($filter, 'time:') === 0) {
         $s = explode('-', substr($filter, 5) . '-' . date('m'));
         $_GET[$q]['event']['year'] = (int) $s[0];

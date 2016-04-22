@@ -6,7 +6,10 @@ Events Plugin for Mecha CMS
 ### Page Types
 
  - `event` → for single event page
- - `index-event` → for event pages
+ - `index-event` → for event’s index page
+ - `tag-event` → for event’s tag page
+ - `archive-event` → for event’s archive page
+ - `search-event` → for event’s search page
 
 ~~~ .php
 if($config->page_type === 'event') {

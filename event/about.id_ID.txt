@@ -1,7 +1,7 @@
 Title: Acara
 Author: Taufik Nurrohman
 URL: http://latitudu.com
-Version: 1.0.0
+Version: 1.1.0
 
 ====
 
@@ -10,8 +10,11 @@ Version: 1.0.0
 #### Tipe Halaman
 
  - `event` → untuk halaman acara tunggal
- - `index-event` → untuk halaman acara dalam bentuk daftar
- 
+ - `index-event` → untuk halaman indeks acara
+ - `tag-event` → untuk halaman label acara
+ - `archive-event` → untuk halaman arsip acara
+ - `search-event` → untuk halaman pencarian acara
+
 ~~~ .php
 if($config->page_type === 'event') {
     echo 'Anda sedang berada di halaman acara.';
