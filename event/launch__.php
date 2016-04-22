@@ -29,45 +29,45 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
         $offset = $filter;
         $filter = "";
     }
-	// Event page ...
-	if($filter && strpos($filter, ':') === false) {
-		// Force disable comment(s) ...
-		Config::set('comments.allow', false);
-		if( ! $event = Get::event($filter)) {
-			Shield::abort('404-event');
-		}
-		if($event->state === 'drafted') {
-			Shield::abort('404-event');
-		}
-		// Collecting event slug ...
-		if($events = Get::events('DESC', "", File::E($event->path))) {
-			$events = Mecha::walk($events, function($path) {
-				$parts = explode('_', File::N($path), 3);
-				return $parts[2];
-			});
-		}
-		Filter::add('pager:url', function($url) {
-			return Filter::apply('event:url', $url);
-		});
-		Config::set(array(
-			'page_title' => $event->title . $config->title_separator . $config->title,
-			'page_type' => 'event',
-			'event' => $event,
-			'article' => $event, // alias
-			'pagination' => Navigator::extract($events, $filter, 1, $config->event->slug),
-			'is.posts' => false,
-			'is.post' => true
-		));
-		Weapon::add('shell_after', function() use($event) {
-			if(isset($event->css) && trim($event->css) !== "") echo O_BEGIN . $event->css . O_END;
-		}, 11);
-		Weapon::add('sword_after', function() use($event) {
-			if(isset($event->js) && trim($event->js) !== "") echo O_BEGIN . $event->js . O_END;
-		}, 11);
-		$s = file_exists(SHIELD . DS . $config->shield . DS . 'event.php') ? 'event' : 'article';
-		Shield::attach($s . '-' . $filter);
-	}
-	// Index event page ...
+    // Event page ...
+    if($filter && strpos($filter, ':') === false) {
+        // Force disable comment(s) ...
+        Config::set('comments.allow', false);
+        if( ! $event = Get::event($filter)) {
+            Shield::abort('404-event');
+        }
+        if($event->state === 'drafted') {
+            Shield::abort('404-event');
+        }
+        // Collecting event slug ...
+        if($events = Get::events('DESC', "", File::E($event->path))) {
+            $events = Mecha::walk($events, function($path) {
+                $parts = explode('_', File::N($path), 3);
+                return $parts[2];
+            });
+        }
+        Filter::add('pager:url', function($url) {
+            return Filter::apply('event:url', $url);
+        });
+        Config::set(array(
+            'page_title' => $event->title . $config->title_separator . $config->title,
+            'page_type' => 'event',
+            'event' => $event,
+            'article' => $event, // alias
+            'pagination' => Navigator::extract($events, $filter, 1, $config->event->slug),
+            'is.posts' => false,
+            'is.post' => true
+        ));
+        Weapon::add('shell_after', function() use($event) {
+            if(isset($event->css) && trim($event->css) !== "") echo O_BEGIN . $event->css . O_END;
+        }, 11);
+        Weapon::add('sword_after', function() use($event) {
+            if(isset($event->js) && trim($event->js) !== "") echo O_BEGIN . $event->js . O_END;
+        }, 11);
+        $s = file_exists(SHIELD . DS . $config->shield . DS . 'event.php') ? 'event' : 'article';
+        Shield::attach($s . '-' . $filter);
+    }
+    // Index event page ...
     $_ = explode(':', $filter, 2);
     $p = Mecha::alter($_[0], array(
         'time' => 'archive',
