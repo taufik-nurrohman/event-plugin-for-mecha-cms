@@ -1,0 +1,186 @@
+Title: Acara
+Author: Taufik Nurrohman
+URL: http://latitudu.com
+Version: 1.0.0
+
+====
+
+> Manajer acara.
+
+#### Tipe Halaman
+
+ - `event` → untuk halaman acara tunggal
+ - `index-event` → untuk halaman acara dalam bentuk daftar
+ 
+~~~ .php
+if($config->page_type === 'event') {
+    echo 'Anda sedang berada di halaman acara.';
+}
+~~~
+
+#### Tameng
+
+Anda dapat membuat salinan `article.php` sebagai `event.php` untuk membuat tampilan spesial pada halaman acara tunggal, dan `index.php` sebagai `index-event.php` untuk membuat tampilan spesial pada halaman acara dalam bentuk daftar.
+
+~~~ .no-highlight
+shield/
+ ├── assets/
+ │    └── …
+ ├── 404.php
+ ├── index.php
+ ├── index-event.php ← ini
+ ├── article.php
+ ├── event.php ← ini
+ ├── page.php
+ ├── page-home.php
+ ├── manager.php
+ ├── comments.php
+ ├── header.php
+ ├── navigation.php
+ ├── footer.php
+ ├── sidebar.php
+ ├── functions.php
+ └── about.txt
+~~~
+
+#### Metode
+
+##### Mendapatkan Label-Label Acara
+
+~~~ .php
+Get::eventTags($order = 'ASC', $sorter = 'name');
+~~~
+
+##### Mendapatkan Label Acara
+
+Mengeluarkan item label acara spesifik yang disaring berdasarkan data yang tersedia.
+
+~~~ .php
+Get::eventTag($filter, $output = null, $fallback = false);
+~~~
+
+##### Mendapatkan Path Acara
+
+~~~ .php
+Get::eventPath($detector);
+~~~
+
+##### Mendapatkan Detail Acara
+
+~~~ .php
+Get::eventExtract($input);
+~~~
+
+##### Mendapatkan Daftar Path Acara
+
+~~~ .php
+Get::events($order = 'DESC', $filter = "", $e = 'txt');
+~~~
+
+##### Mendapatkan Daftar Detail Acara
+
+~~~ .php
+Get::eventsExtract($order = 'DESC', $sorter = 'time', $filter = "", $e = 'txt');
+~~~
+
+##### Mendapatkan Data Minimal Acara
+
+~~~ .php
+Get::eventAnchor($path);
+~~~
+
+##### Mendapatkan Kop Acara
+
+~~~ .php
+Get::eventHeader($path);
+~~~
+
+##### Mengekstrak Berkas Acara menjadi Daftar Data Acara
+
+~~~ .php
+Get::event($reference, $excludes = array());
+~~~
+
+#### Widget
+
+##### Arsip Acara
+
+~~~ .php
+echo Widget::eventArchive();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->archive_event,
+    'content' => Widget::eventArchive()
+));
+~~~
+
+##### Label Acara
+
+~~~ .php
+echo Widget::eventTag();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->tags_event,
+    'content' => Widget::eventTag()
+));
+~~~
+
+##### Acara Terbaru
+
+~~~ .php
+echo Widget::recentEvent();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->recent_events,
+    'content' => Widget::recentEvent()
+));
+~~~
+
+##### Acara Acak
+
+~~~ .php
+echo Widget::randomEvent();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->random_events,
+    'content' => Widget::randomEvent()
+));
+~~~
+
+##### Acara Terkait
+
+~~~ .php
+echo Widget::relatedEvent();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->related_events,
+    'content' => Widget::relatedEvent()
+));
+~~~
+
+##### Kalender Acara
+
+Memerlukan plugin [kalender](http://mecha-cms.com/article/calendar-plugin "Calendar Plugin").
+
+~~~ .php
+echo Widget::calendar('event');
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->calendar_events,
+    'content' => Widget::calendar('event')
+));
+~~~
+
+<!-- block:donate -->

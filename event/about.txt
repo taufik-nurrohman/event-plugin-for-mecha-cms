@@ -1,0 +1,186 @@
+Title: Events
+Author: Taufik Nurrohman
+URL: http://latitudu.com
+Version: 1.0.0
+
+====
+
+> Events manager.
+
+#### Page Types
+
+ - `event` → for single event page
+ - `index-event` → for event pages
+
+~~~ .php
+if($config->page_type === 'event') {
+    echo 'You are in the event page.';
+}
+~~~
+
+#### Shield
+
+You can make a copy of `article.php` as `event.php` to create special layout for single event page view, and `index.php` as `index-event.php` to create special layout for event pages view.
+
+~~~ .no-highlight
+shield/
+ ├── assets/
+ │    └── …
+ ├── 404.php
+ ├── index.php
+ ├── index-event.php ← this
+ ├── article.php
+ ├── event.php ← this
+ ├── page.php
+ ├── page-home.php
+ ├── manager.php
+ ├── comments.php
+ ├── header.php
+ ├── navigation.php
+ ├── footer.php
+ ├── sidebar.php
+ ├── functions.php
+ └── about.txt
+~~~
+
+#### Methods
+
+##### Get Event Tags
+
+~~~ .php
+Get::eventTags($order = 'ASC', $sorter = 'name');
+~~~
+
+##### Get Event Tag
+
+Return specific event tag item filtered by its available data.
+
+~~~ .php
+Get::eventTag($filter, $output = null, $fallback = false);
+~~~
+
+##### Get Event Path
+
+~~~ .php
+Get::eventPath($detector);
+~~~
+
+##### Get Event Details
+
+~~~ .php
+Get::eventExtract($input);
+~~~
+
+##### Get List of Events Path
+
+~~~ .php
+Get::events($order = 'DESC', $filter = "", $e = 'txt');
+~~~
+
+##### Get List of Events Details
+
+~~~ .php
+Get::eventsExtract($order = 'DESC', $sorter = 'time', $filter = "", $e = 'txt');
+~~~
+
+##### Get Minimum Data of an Event
+
+~~~ .php
+Get::eventAnchor($path);
+~~~
+
+##### Get Event Headers Only
+
+~~~ .php
+Get::eventHeader($path);
+~~~
+
+##### Extract Event File into List of Event Data
+
+~~~ .php
+Get::event($reference, $excludes = array());
+~~~
+
+#### Widgets
+
+##### Event Archive
+
+~~~ .php
+echo Widget::eventArchive();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->archive_event,
+    'content' => Widget::eventArchive()
+));
+~~~
+
+##### Event Tags
+
+~~~ .php
+echo Widget::eventTag();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->tags_event,
+    'content' => Widget::eventTag()
+));
+~~~
+
+##### Recent Event
+
+~~~ .php
+echo Widget::recentEvent();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->recent_events,
+    'content' => Widget::recentEvent()
+));
+~~~
+
+##### Random Event
+
+~~~ .php
+echo Widget::randomEvent();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->random_events,
+    'content' => Widget::randomEvent()
+));
+~~~
+
+##### Related Event
+
+~~~ .php
+echo Widget::relatedEvent();
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->related_events,
+    'content' => Widget::relatedEvent()
+));
+~~~
+
+##### Event Calendar
+
+Requires [calendar](http://mecha-cms.com/article/calendar-plugin "Calendar Plugin") plugin.
+
+~~~ .php
+echo Widget::calendar('event');
+~~~
+
+~~~ .php
+echo Shield::chunk('block.widget', array(
+    'title' => $speak->widget->calendar_events,
+    'content' => Widget::calendar('event')
+));
+~~~
+
+<!-- block:donate -->

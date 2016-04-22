@@ -40,7 +40,7 @@ Get::plug('eventHeader', function($path) {
     return Get::postHeader($path, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
 });
 
-// Extract event file into list of event date
+// Extract event file into list of event data
 Get::plug('event', function($reference, $excludes = array()) {
     return Get::post($reference, $excludes, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
 });

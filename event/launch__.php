@@ -4,17 +4,6 @@
 // Exclude these fields ...
 $excludes = array('content');
 
-// Update event tag URL ...
-Filter::add('tag:url', function($url) use($config) {
-    if($tag = Get::eventTag('slug:' . File::B($url))) {
-        return $config->url . '/' . $config->event->slug . str_replace('&', '&amp;', HTTP::query(array(
-            'filter' => 'kind:' . $tag->id,
-            $config->event_query => false
-        )));
-    }
-    return $url;
-});
-
 
 /**
  * Index Event Page
@@ -26,7 +15,8 @@ Filter::add('tag:url', function($url) use($config) {
  */
 
 Route::accept(array($config->event->slug, $config->event->slug . '/(:num)'), function($offset = 1) use($config, $excludes) {
-    $s = Get::events(null, Request::get('filter', ""));
+    $t = Request::get('filter', "");
+    $s = Get::events(null, $t);
     if($events = Mecha::eat($s)->chunk($offset, $config->event->per_page)->vomit()) {
         $events = Mecha::walk($events, function($path) use($excludes) {
             return Get::event($path, $excludes);
@@ -44,6 +34,7 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:num)'), fun
     Config::set(array(
         'page_title' => $config->event->title . $config->title_separator . $config->title,
         'page_type' => 'index-event',
+        'event_query' => $t,
         'offset' => $offset,
         'events' => $events,
         'articles' => $events, // alias
@@ -53,7 +44,7 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:num)'), fun
     ));
     $s = file_exists(SHIELD . DS . $config->shield . DS . 'index-event.php') ? 'index-event' : 'index-article';
     Shield::attach($s);
-});
+}, 30);
 
 
 /**
@@ -100,4 +91,4 @@ Route::accept($config->event->slug . '/(:any)', function($slug = "") use($config
     }, 11);
     $s = file_exists(SHIELD . DS . $config->shield . DS . 'event.php') ? 'event' : 'article';
     Shield::attach($s . '-' . $slug);
-});
+}, 70);

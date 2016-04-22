@@ -1,2 +1,26 @@
 event: Acara
 events: Acara
+
+widget:
+
+  archive_event: Arsip Acara
+  archive_events: Arsip Acara
+  archives_event: Arsip Acara
+  archives_events: Arsip Acara
+
+  tag_event: Label Acara
+  tag_events: Label Acara
+  tags_event: Label Acara
+  tags_events: Label Acara
+
+  recent_event: Acara Terbaru
+  recent_events: Acara Terbaru
+
+  random_event: Acara Acak
+  random_events: Acara Acak
+
+  related_event: Acara Terkait
+  related_events: Acara Terkait
+
+  calendar_event: Kalender Acara
+  calendar_events: Kalender Acara

@@ -1,2 +1,26 @@
 event: Event
 events: Events
+
+widget:
+
+  archive_event: Event Archive
+  archive_events: Events Archive
+  archives_event: Event Archives
+  archives_events: Events Archives
+
+  tag_event: Event Tag
+  tag_events: Events Tag
+  tags_event: Event Tags
+  tags_events: Events Tags
+
+  recent_event: Recent Event
+  recent_events: Recent Events
+
+  random_event: Random Event
+  random_events: Random Events
+
+  related_event: Related Event
+  related_events: Related Events
+
+  calendar_event: Event Calendar
+  calendar_events: Events Calendar
