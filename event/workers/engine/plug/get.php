@@ -12,7 +12,7 @@ Get::plug('eventTag', function($filter, $output = null, $fallback = false) {
 
 // Get event path
 Get::plug('eventPath', function($detector) {
-    return Get::postPath($detector, POST . DS . 'event');
+    return Get::postPath($detector, EVENT);
 });
 
 // Get list of event detail(s)
@@ -22,25 +22,25 @@ Get::plug('eventExtract', function($input) {
 
 // Get list of event(s) path
 Get::plug('events', function($order = 'DESC', $filter = "", $e = 'txt') {
-    return Get::posts($order, $filter, $e, POST . DS . 'event');
+    return Get::posts($order, $filter, $e, EVENT);
 });
 
 // Get list of event(s) detail(s)
 Get::plug('eventsExtract', function($order = 'DESC', $sorter = 'time', $filter = "", $e = 'txt') {
-    return Get::postsExtract($order, $sorter, $filter, $e, POST . DS . 'event', 'event:');
+    return Get::postsExtract($order, $sorter, $filter, $e, EVENT, 'event:');
 });
 
 // Get minimum data of an event
-Get::plug('eventAnchor', function($path) {
-    return Get::postAnchor($path, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
+Get::plug('eventAnchor', function($path) use($c_event) {
+    return Get::postAnchor($path, EVENT, 'event:', '/' . $c_event->event->slug . '/');
 });
 
 // Get event header(s) only
-Get::plug('eventHeader', function($path) {
-    return Get::postHeader($path, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
+Get::plug('eventHeader', function($path) use($c_event) {
+    return Get::postHeader($path, EVENT, 'event:', '/' . $c_event->event->slug . '/');
 });
 
 // Extract event file into list of event data
-Get::plug('event', function($reference, $excludes = array()) {
-    return Get::post($reference, $excludes, POST . DS . 'event', 'event:', '/' . Config::get('event.slug') . '/');
+Get::plug('event', function($reference, $excludes = array()) use($c_event) {
+    return Get::post($reference, $excludes, EVENT, 'event:', '/' . $c_event->event->slug . '/');
 });

@@ -1,7 +1,8 @@
 <?php
 
 // Adding event(s) data to the event calendar ...
-Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak) {
+Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak, $c_event) {
+    $c = $c_event->event;
     $the_year = Calendar::year($id, $year);
     $the_month = Calendar::month($id, $month);
     // Load data if the calendar time is equal to current time
@@ -10,8 +11,8 @@ Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak) 
         if($files = Get::events(null, 'time:' . $year . '-' . $month_str)) {
             // link to event archive page
             $lot[$year . '/' . $month] = array(
-                'url' => $config->url . '/' . $config->event->slug . '/time:' . $year . '-' . $month_str,
-                'description' => $config->event->title
+                'url' => $config->url . '/' . $c->slug . '/time:' . $year . '-' . $month_str,
+                'description' => $c->title
             );
             $lot_o = array();
             foreach($files as $file) {
@@ -51,8 +52,8 @@ Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak) 
     $m_n = $lot['next']['month'];
     if($m_p < 10) $m_p = '0' . $m_p;
     if($m_n < 10) $m_n = '0' . $m_n;
-    $lot['prev']['url'] = $config->url . '/' . $config->event->slug . '/time:' . $y_p . '-' . $m_p;
-    $lot['next']['url'] = $config->url . '/' . $config->event->slug . '/time:' . $y_n . '-' . $m_n;
+    $lot['prev']['url'] = $config->url . '/' . $c->slug . '/time:' . $y_p . '-' . $m_p;
+    $lot['next']['url'] = $config->url . '/' . $c->slug . '/time:' . $y_n . '-' . $m_n;
     return $lot;
 });
 

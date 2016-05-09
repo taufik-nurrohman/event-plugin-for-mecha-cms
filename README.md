@@ -17,7 +17,11 @@ if($config->page_type === 'event') {
 }
 ~~~
 
-### Shield
+### Constants
+
+ - `EVENT` → map to `lot\posts\event`
+
+### Shields
 
 You can make a copy of `article.php` as `event.php` to create special layout for single event page view, and `index.php` as `index-event.php` to create special layout for event pages view.
 

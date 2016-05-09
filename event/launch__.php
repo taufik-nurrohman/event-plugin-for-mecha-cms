@@ -1,8 +1,11 @@
 <?php
 
 
-// Exclude these fields ...
-$excludes = array('content');
+// Quick page type detection ...
+if(strpos($config->url_path . '/', $config->event->slug . '/') === 0) {
+    $config->page_type = 'event';
+    Config::set('page_type', 'event');
+}
 
 
 /**
@@ -24,7 +27,9 @@ $excludes = array('content');
  *
  */
 
-Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $config->event->slug . '/(:any)/(:num)'), function($filter = "", $offset = 1) use($config, $excludes) {
+Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $config->event->slug . '/(:any)/(:num)'), function($filter = "", $offset = 1) use($config, $c_event) {
+    // Exclude these fields ...
+    $excludes = (array) Config::get($config->page_type . '_fields_exclude', array('content'));
     if(is_numeric($filter)) {
         $offset = $filter;
         $filter = "";
@@ -51,12 +56,11 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
         });
         Config::set(array(
             'page_title' => $event->title . $config->title_separator . $config->title,
-            'page_type' => 'event',
             'event' => $event,
             'article' => $event, // alias
             'pagination' => Navigator::extract($events, $filter, 1, $config->event->slug),
-            'is.posts' => false,
-            'is.post' => true
+            'is.post' => true,
+            'is.posts' => false
         ));
         Weapon::add('shell_after', function() use($event) {
             if(isset($event->css) && trim($event->css) !== "") echo O_BEGIN . $event->css . O_END;
@@ -65,7 +69,7 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
             if(isset($event->js) && trim($event->js) !== "") echo O_BEGIN . $event->js . O_END;
         }, 11);
         $s = file_exists(SHIELD . DS . $config->shield . DS . 'event.php') ? 'event' : 'article';
-        Shield::attach($s . '-' . $filter);
+        Shield::lot(array('c_event' => $c_event))->attach($s . '-' . $filter);
     }
     // Index event page ...
     $_ = explode(':', $filter, 2);
@@ -98,9 +102,9 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
         'events' => $events,
         'articles' => $events, // alias
         'pagination' => Navigator::extract($s, $offset, $config->event->per_page, $config->event->slug . '/' . $filter),
-        'is.posts' => true,
-        'is.post' => false
+        'is.post' => false,
+        'is.posts' => true
     ));
     $s = file_exists(SHIELD . DS . $config->shield . DS . $p . '-event.php') ? $p . '-event' : 'index';
-    Shield::attach($s);
+    Shield::lot(array('c_event' => $c_event))->attach($s);
 }, 30);
