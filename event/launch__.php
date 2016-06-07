@@ -2,9 +2,25 @@
 
 
 // Quick page type detection ...
-if(strpos($config->url_path . '/', $config->event->slug . '/') === 0) {
-    $config->page_type = 'event';
-    Config::set('page_type', 'event');
+$path = $config->url_path;
+$slug = $config->event->slug;
+if(strpos($path . '/', $slug . '/') === 0) {
+    $config->page_type = 'index-event';
+    if(strpos($path, $slug . '/time:') === 0) {
+        $config->page_type = 'archive-event';
+    } else if(strpos($path, $slug . '/kind:') === 0) {
+        $config->page_type = 'tag-event';
+    } else if(strpos($path, $slug . '/slug:') === 0 || strpos($path, $slug . '/keyword:') === 0) {
+        $config->page_type = 'search-event';
+    } else {
+        $s = explode('/', $path);
+        if(isset($s[1])) {
+            $config->page_type = is_numeric($s[1]) ? 'index-event' : 'event';
+        } else {
+            $config->page_type = 'index-event';
+        }
+    }
+    Config::set('page_type', $config->page_type);
 }
 
 
@@ -37,7 +53,9 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
     // Event page ...
     if($filter && strpos($filter, ':') === false) {
         // Force disable comment(s) ...
-        Config::set('comments.allow', false);
+        // if( ! function_exists('do_comments_field')) {
+            Config::set('comments.allow', false);
+        // }
         if( ! $event = Get::event($filter)) {
             Shield::abort('404-event');
         }
@@ -96,7 +114,6 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
     });
     Config::set(array(
         'page_title' => $config->event->title . $config->title_separator . $config->title,
-        'page_type' => $p . '-event',
         'event_query' => $filter,
         'offset' => $offset,
         'events' => $events,

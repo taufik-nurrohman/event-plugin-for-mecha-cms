@@ -12,7 +12,7 @@
       for($i = -10; $i < 20; ++$i) {
           $years[$date[0] + $i] = $date[0] + $i;
       }
-      $months_text = (array) $speak->month_names;
+      $months_text = $speak->month_names;
       for($i = 1; $i < 13; ++$i) {
           $months[$i < 10 ? '0' . $i : $i] = $months_text[$i - 1];
       }
@@ -54,7 +54,7 @@
       <span class="grid span-1"><?php echo Form::select('date[0]', $years, $date[0], array('class' => 'input-block')); ?></span>
       <span class="grid span-3"><?php echo Form::select('date[1]', $months, $date[1], array('class' => 'input-block')); ?></span>
       <span class="grid span-1"><?php echo Form::select('date[2]', $days, $date[2], array('class' => 'input-block')); ?></span>
-      <span class="grid span-1"><?php echo Form::text('date[3-4]', $date[3] . ':' . $date[4], date('H:i'), array('class' => 'input-block', 'pattern' => '\d+:\d+')); ?></span>
+      <span class="grid span-1"><?php echo Form::text('date[3-4]', $date[3] . ':' . $date[4], date('H:i'), array('class' => 'input-block', 'pattern' => '\d{2}:\d{2}')); ?></span>
     </span>
   </span>
 </div>
