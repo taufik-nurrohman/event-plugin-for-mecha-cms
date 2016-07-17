@@ -31,27 +31,27 @@ Get::plug('eventsExtract', function($order = 'DESC', $sorter = 'time', $filter =
 });
 
 // Get minimum data of an event
-Get::plug('eventAnchor', function($path) use($c_event) {
+Get::plug('eventAnchor', function($path) use($config) {
     $c = Config::get('index.slug');
-    Config::set('index.slug', $c_event->event->slug);
+    Config::set('index.slug', $config->index_event->slug);
     $post = Get::postAnchor($path, EVENT, 'event:');
     Config::set('index.slug', $c);
     return $post;
 });
 
 // Get event header(s) only
-Get::plug('eventHeader', function($path) use($c_event) {
+Get::plug('eventHeader', function($path) use($config) {
     $c = Config::get('index.slug');
-    Config::set('index.slug', $c_event->event->slug);
+    Config::set('index.slug', $config->index_event->slug);
     $post = Get::postHeader($path, EVENT, 'event:');
     Config::set('index.slug', $c);
     return $post;
 });
 
 // Extract event file into list of event data
-Get::plug('event', function($reference, $excludes = array()) use($c_event) {
+Get::plug('event', function($reference, $excludes = array()) use($config) {
     $c = Config::get('index.slug');
-    Config::set('index.slug', $c_event->event->slug);
+    Config::set('index.slug', $config->index_event->slug);
     $post = Get::post($reference, $excludes, EVENT, 'event:');
     Config::set('index.slug', $c);
     return $post;

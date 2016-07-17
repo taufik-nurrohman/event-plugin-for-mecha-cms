@@ -1,8 +1,8 @@
 <?php
 
 // Adding event(s) data to the event calendar ...
-Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak, $c_event) {
-    $c = $c_event->event;
+Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak) {
+    $c = $config->index_event;
     $the_year = Calendar::year($id, $year);
     $the_month = Calendar::month($id, $month);
     // Load data if the calendar time is equal to current time
@@ -57,7 +57,7 @@ Calendar::hook('event', function($lot, $year, $month, $id) use($config, $speak, 
     return $lot;
 });
 
-// Hijack HTTP query of calendar based on `?filter=time:*` value ...
+// Hijack HTTP query of calendar based on `$config->event_query` value ...
 Weapon::add('shield_lot_before', function() use($q) {
     $filter = Config::get('event_query', 'time:' . date('Y-m'));
     if(strpos($filter, 'time:') === 0) {

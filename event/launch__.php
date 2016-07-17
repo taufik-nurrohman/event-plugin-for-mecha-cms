@@ -3,7 +3,7 @@
 
 // Quick page type detection ...
 $path = $config->url_path;
-$slug = $config->event->slug;
+$slug = $config->index_event->slug;
 if(strpos($path . '/', $slug . '/') === 0) {
     $config->page_type = 'index-event';
     if(strpos($path, $slug . '/time:') === 0) {
@@ -43,7 +43,7 @@ if(strpos($path . '/', $slug . '/') === 0) {
  *
  */
 
-Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $config->event->slug . '/(:any)/(:num)'), function($filter = "", $offset = 1) use($config, $c_event) {
+Route::accept(array($config->index_event->slug, $config->index_event->slug . '/(:any)', $config->index_event->slug . '/(:any)/(:num)'), function($filter = "", $offset = 1) use($config) {
     // Exclude these fields ...
     $excludes = (array) Config::get($config->page_type . '_fields_exclude', array('content'));
     if(is_numeric($filter)) {
@@ -76,7 +76,7 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
             'page_title' => $event->title . $config->title_separator . $config->title,
             'event' => $event,
             'article' => $event, // alias
-            'pagination' => Navigator::extract($events, $filter, 1, $config->event->slug),
+            'pagination' => Navigator::extract($events, $filter, 1, $config->index_event->slug),
             'is.post' => true,
             'is.posts' => false
         ));
@@ -87,7 +87,7 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
             if(isset($event->js) && trim($event->js) !== "") echo O_BEGIN . $event->js . O_END;
         }, 11);
         $s = file_exists(SHIELD . DS . $config->shield . DS . 'event.php') ? 'event' : 'article';
-        Shield::lot(array('c_event' => $c_event))->attach($s . '-' . $filter);
+        Shield::attach($s . '-' . $filter);
     }
     // Index event page ...
     $_ = explode(':', $filter, 2);
@@ -98,7 +98,7 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
         'keyword' => 'search'
     ), 'index');
     $s = Get::events(null, $filter);
-    if($events = Mecha::eat($s)->chunk($offset, $config->event->per_page)->vomit()) {
+    if($events = Mecha::eat($s)->chunk($offset, $config->index_event->per_page)->vomit()) {
         $events = Mecha::walk($events, function($path) use($excludes) {
             return Get::event($path, $excludes);
         });
@@ -113,15 +113,15 @@ Route::accept(array($config->event->slug, $config->event->slug . '/(:any)', $con
         return Filter::apply($p . '-event:url', $url);
     });
     Config::set(array(
-        'page_title' => $config->event->title . $config->title_separator . $config->title,
+        'page_title' => $config->index_event->title . $config->title_separator . $config->title,
         'event_query' => $filter,
         'offset' => $offset,
         'events' => $events,
         'articles' => $events, // alias
-        'pagination' => Navigator::extract($s, $offset, $config->event->per_page, $config->event->slug . '/' . $filter),
+        'pagination' => Navigator::extract($s, $offset, $config->index_event->per_page, $config->index_event->slug . '/' . $filter),
         'is.post' => false,
         'is.posts' => true
     ));
     $s = file_exists(SHIELD . DS . $config->shield . DS . $p . '-event.php') ? $p . '-event' : 'index';
-    Shield::lot(array('c_event' => $c_event))->attach($s);
+    Shield::attach($s);
 }, 30);

@@ -6,7 +6,8 @@ define('EVENT', POST . DS . 'event');
 // Set some default configuration value(s)
 $c_event = $config->states->{'plugin_' . md5(File::B(__DIR__))};
 $s = __DIR__ . DS . 'workers' . DS . 'engine' . DS . 'plug' . DS;
-Config::set(Mecha::A($c_event) + array(
+Config::set(array(
+    'index_event' => Mecha::A($c_event),
     'defaults.event_title' => Config::get('defaults.event_title', ""),
     'defaults.event_content' => Config::get('defaults.event_content', ""),
     'defaults.event_css' => Config::get('defaults.event_css', ""),
@@ -34,7 +35,7 @@ require $s . 'get.php';
 require $s . 'widget.php';
 
 // Loading event calendar widget ...
-Weapon::add('plugins_after', function() use($config, $speak, $c_event, $s) {
+Weapon::add('plugins_after', function() use($config, $speak, $s) {
     $q = Plugin::exist('calendar') && class_exists('Calendar') ? Calendar::$config['query'] : "";
     if($q) require $s . DS . 'calendar.php';
 });

@@ -1,1 +1,1 @@
-a:1:{s:5:"event";a:3:{s:5:"title";s:5:"Event";s:4:"slug";s:5:"event";s:8:"per_page";i:7;}}
+a:3:{s:5:"title";s:5:"Event";s:4:"slug";s:5:"event";s:8:"per_page";i:7;}

@@ -2,13 +2,13 @@
 
 function do_widget_event_archive($url) {
     global $config;
-    return $config->url . '/' . $config->event->slug . '/time:' . File::B($url);
+    return $config->url . '/' . $config->index_event->slug . '/time:' . File::B($url);
 }
 
 function do_widget_event_tag($url) {
     global $config;
     if($tag = Get::eventTag('slug:' . File::B($url))) {
-        return $config->url . '/' . $config->event->slug . '/kind:' . $tag->id;
+        return $config->url . '/' . $config->index_event->slug . '/kind:' . $tag->id;
     }
     return $url;
 }
